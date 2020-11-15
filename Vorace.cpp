@@ -10,58 +10,54 @@ const int MAXLIST = sizeof(InputArray)/sizeof(START);
 
 std::string output; 
 
-std::string AGauche(int index, int key)
+void AGauche(int index, int key, int &count)
 {
     int CurrentIndex = index;
 
     --index;
     if ((index >= START) && (InputArray[index] <= key))
     {
-        //output = output + std::to_string(InputArray[index]);
-        output = output + AGauche(index, key);
-        //AGauche(index, key);
+        AGauche(index, key, count);
+        ++count;
     }
     else
     {
         index = CurrentIndex;
     }
-
-    return std::to_string(InputArray[index]);
 }
 
-std::string ADroigt(int index, int key)
+void ADroigt(int index, int key, int& count)
 {
     int CurrentIndex = index;
 
     ++index;
-    if ((index >= START)  && (InputArray[index] <= key))
+    if ((index < MAXLIST)  && (InputArray[index] <= key))
     {
-        //output = output + std::to_string(InputArray[index]);
-        output = output + ADroigt(index, key);
+        ADroigt(index, key, count);
+        ++count;
     }
     else
     {
         index = CurrentIndex;
     }
-    return std::to_string(InputArray[index]);
 }
 
-std::string Vorace(int index)
+int  Vorace(int index)
 {
+    int count = 1;
+
     if (index >= START)
     {
-        //output + std::to_string(InputArray[index]);
-        output = AGauche(index, InputArray[index]);
+        AGauche(index, InputArray[index], count);
     }
     
     if (index <= MAXLIST)
     {
-        //output + std::to_string(InputArray[index]);
-       output =  ADroigt(index, InputArray[index]);
+       ADroigt(index, InputArray[index], count);
     }
 
     /*return std::string("");*/
-    return std::to_string(InputArray[index]);
+    return count;
 }
 
 
@@ -69,11 +65,8 @@ int main()
 {
     for (int i = START; i <= MAXLIST; i++)
     {
-        output = output + Vorace(i);
-        std::cout << output << std::endl;
-        output = std::string("");
+       std::cout << std::to_string(Vorace(i)) << std::endl;
     }
-    std::cout << "Hello World!\n";
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
