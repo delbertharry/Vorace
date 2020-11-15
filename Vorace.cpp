@@ -4,52 +4,74 @@
 #include <iostream>
 #include <string>
 
-
 int InputArray[5] = { 3,4,1,6,2 };
+const int START = 0;
+const int MAXLIST = sizeof(InputArray)/sizeof(START);
+
 std::string output; 
 
 std::string AGauche(int index, int key)
 {
-    if ((index > 1) && (InputArray[index] >= key))
+    int CurrentIndex = index;
+
+    --index;
+    if ((index >= START) && (InputArray[index] <= key))
     {
-        output = output + std::to_string(InputArray[index]);
-        AGauche(--index);
+        //output = output + std::to_string(InputArray[index]);
+        output = output + AGauche(index, key);
+        //AGauche(index, key);
     }
+    else
+    {
+        index = CurrentIndex;
+    }
+
+    return std::to_string(InputArray[index]);
 }
 
 std::string ADroigt(int index, int key)
 {
-    if ((index < 1)  && (InputArray[index] >= key))
+    int CurrentIndex = index;
+
+    ++index;
+    if ((index >= START)  && (InputArray[index] <= key))
     {
-        output = output + std::to_string(InputArray[index]);
-        ADroigt(++index);
+        //output = output + std::to_string(InputArray[index]);
+        output = output + ADroigt(index, key);
     }
+    else
+    {
+        index = CurrentIndex;
+    }
+    return std::to_string(InputArray[index]);
 }
 
 std::string Vorace(int index)
 {
-    if (index > 1)
+    if (index >= START)
     {
-        output = output + std::to_string(InputArray[index]);
-        AGauche(--index, InputArray[index]);
+        //output + std::to_string(InputArray[index]);
+        output = AGauche(index, InputArray[index]);
     }
-    else if (index < 5) 
+    
+    if (index <= MAXLIST)
     {
-        output = output + std::to_string(InputArray[index]);
-        ADroigt(++index, InputArray[index]);
+        //output + std::to_string(InputArray[index]);
+       output =  ADroigt(index, InputArray[index]);
     }
-    else
-    {
-        //Do Nothing
-    }
+
+    /*return std::string("");*/
+    return std::to_string(InputArray[index]);
 }
 
 
 int main()
 {
-    for (int i = 0; i < 5; i++)
+    for (int i = START; i <= MAXLIST; i++)
     {
-        output = Vorace(i);
+        output = output + Vorace(i);
+        std::cout << output << std::endl;
+        output = std::string("");
     }
     std::cout << "Hello World!\n";
 }
